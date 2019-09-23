@@ -34,14 +34,14 @@ function Exivo(log, config, api) {
     this.accessories = new Map()
     this.devicesFromApi = new Map()
 
-    this.site_id = config["site_id"] || null
-    this.api_key = config["api_key"] || null
-    this.api_secret = config["api_secret"] || null
+    this.site_id = config.site_id || null
+    this.api_key = config.api_key || null
+    this.api_secret = config.api_secret || null
     this.apiDelay = config.apiDelay || 0
     this.autoLock = config.autoLock || true
     this.autoLockDelay = config.autoLockDelay || 10
     this.manufacturer = "Dormakaba"
-    this.delegatedUser = config["delegatedUser"] || "Homebridge"
+    this.delegatedUser = config.delegatedUser || "Homebridge"
 
     this.url = "https://api.exivo.io/v1/" + this.site_id + "/component"
     this.auth = "Basic " + new Buffer(this.api_key + ":" + this.api_secret).toString("base64")
@@ -154,7 +154,7 @@ function Exivo(log, config, api) {
 
 Exivo.prototype.configureAccessory = function(accessory) {
 
-  this.log(accessory.displayName, " : Configure Accessory")
+  this.log("[%s] : Configure Accessory", accessory.displayName)
 
   let platform = this
 
@@ -250,9 +250,9 @@ Exivo.prototype.getLockCurrentState = function (accessory, callback) {
 }
 
 Exivo.prototype.setLockTargetState = function (accessory, value, callback) {
-  this.log.debug('Setting LockTargetState to %s', value)
+  this.log.debug('[%s] Setting LockTargetState to %s',accessory.displayName, value)
   if (value === 1) {
-      this.log('Closed the lock')
+      this.log('[%s] Closed the lock', accessory.displayName)
       accessory.getService(Service.LockMechanism).getCharacteristic(Characteristic.LockCurrentState).updateValue(1)
       callback()
   } else {
@@ -275,18 +275,18 @@ Exivo.prototype.setLockTargetState = function (accessory, value, callback) {
       // response will be 204
       if (!err && response.statusCode == 204) {
         // we succeeded, so update the "current" state as well
-        this.log('Opened the lock')
+        this.log('[%s] Opened the lock', accessory.displayName)
         setTimeout(() => {
           accessory.getService(Service.LockMechanism).getCharacteristic(Characteristic.LockCurrentState).updateValue(0)
           if (this.autoLock) {
             this.autoLockFunction(accessory)
           }
-          this.log("State change complete.")
+          this.log("[%s] State change complete.", accessory.displayName)
           callback() // success
         }, this.apiDelay * 1000)
       }
       else {
-        this.log("Error '%s' setting lock state. Response: %s", err, body)
+        this.log("[%s] Error '%s' setting lock state. Response: %s", accessory.displayName, err, body)
         callback(err || new Error("Error setting lock state."))
       }
     }.bind(this))  // end for comment
@@ -294,7 +294,7 @@ Exivo.prototype.setLockTargetState = function (accessory, value, callback) {
 }
 
 Exivo.prototype.autoLockFunction = function (accessory) {
-  this.log('Waiting %s seconds for autolock', this.autoLockDelay)
+  this.log('[%s] Waiting %s seconds for autolock', accessory.displayName, this.autoLockDelay)
   setTimeout(() => {
     accessory.getService(Service.LockMechanism).setCharacteristic(Characteristic.LockTargetState, 1)
   }, this.autoLockDelay * 1000)
