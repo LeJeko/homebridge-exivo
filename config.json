@@ -1,0 +1,10 @@
+{
+            "platform": "Exivo",
+            "site_id": "00000000-0000-0000-0000-000000000000",
+            "api_key": "00000000-0000-0000-0000-000000000000",
+            "api_secret": "00000000-0000-0000-0000-000000000000",
+            "apiDelay": 3,
+            "autoLock": true,
+            "autoLockDelay": 6,
+            "delegatedUser": "Homebridge"
+}
