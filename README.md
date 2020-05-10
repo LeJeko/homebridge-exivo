@@ -1,5 +1,16 @@
-# homebridge-exivo Plugin
+<p align="center">
+  <a href="https://github.com/homebridge/homebridge"><img src="https://raw.githubusercontent.com/homebridge/branding/master/logos/homebridge-color-round-stylized.png" height="140"></a>
+</p>
 
+<span align="center">
+
+# homebridge-exivo
+
+[![npm](https://img.shields.io/npm/v/homebridge-exivo.svg)](https://www.npmjs.com/package/homebridge-exivo) [![npm](https://img.shields.io/npm/dt/homebridge-exivo.svg)](https://www.npmjs.com/package/homebridge-exivo)
+
+</span>
+
+## Description
 This homebridge plug-in exposes Lock accessories from Dormakaba Exivo API to Homekit.
 You must get your site ID and generate API keys from [Customer portal](https://auth.exivo.io/login).
 
