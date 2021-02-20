@@ -37,9 +37,9 @@ function Exivo(log, config, api) {
     this.site_id = config.site_id || null
     this.api_key = config.api_key || null
     this.api_secret = config.api_secret || null
-    this.apiDelay = config.apiDelay || 0
+    this.apiDelay = config.apiDelay || 3
     this.autoLock = config.autoLock || true
-    this.autoLockDelay = config.autoLockDelay || 10
+    this.autoLockDelay = config.autoLockDelay || 6
     this.manufacturer = "Dormakaba"
     this.delegatedUser = config.delegatedUser || "Homebridge"
 

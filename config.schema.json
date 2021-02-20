@@ -1,0 +1,58 @@
+{
+	"pluginAlias": "Exivo",
+	"pluginType": "platform",
+	"singular": true,
+	"headerDisplay": "This homebridge plug-in exposes Lock accessories from Dormakaba Exivo API to Homekit. You must get your site ID and generate API keys from [Customer portal](https://auth.exivo.io/login).",
+	"schema": {
+		"type": "object",
+		"properties": {
+			"site_id": {
+				"title": "Site ID",
+				"type": "string",
+				"required": true,
+				"placeholder": "UUID",
+				"default": ""
+			},
+			"api_key": {
+				"title": "API Key",
+				"type": "string",
+				"required": true,
+				"placeholder": "UUID",
+				"default": ""
+			},
+			"api_secret": {
+				"title": "API Secret",
+				"type": "string",
+				"required": true,
+				"placeholder": "UUID",
+				"default": ""
+			},
+			"apiDelay": {
+				"title": "Delay between the Homekit action and the lock response time to execute the command",
+				"type": "integer",
+				"minimum": 0,
+				"maximum": 10,
+				"default": 3,
+				"description": "0 to 10 sec"
+			},
+			"autoLock": {
+				"title": "Simulate autolock behavior",
+				"type": "boolean",
+				"default": true
+			},
+			"autoLockDelay": {
+				"title": "Time in seconds after the lock is self-locked",
+				"type": "integer",
+				"minimum": 0,
+				"maximum": 30,
+				"default": 6,
+				"description": "0 to 30 sec"
+			},
+			"delegatedUser": {
+				"title": "String that appears on Customer Portal log",
+				"type": "string",
+				"default": "homebridge"
+			}
+		}
+	}
+}

@@ -33,12 +33,14 @@ You must get your site ID and generate API keys from [Customer portal](https://a
 
 ## Optional values
 
-> **apiDelay** // Default: 0 sec
-Delay between Homekit action and API to execute command.
+> **apiDelay** // 0 - 10, default: 3
+Delay between the Homekit action and the lock response time to execute the command.
 
 > **autoLock** // Default: true
+Simulate autolock behavior
 
-> **autoLockDelay** // Default: 10
+> **autoLockDelay** // 0 - 30, default: 6
+Time in seconds after the lock is self-locked
 
 > **delagatedUser** // Default: Homebridge
 String that appears on Customer Portal log.
