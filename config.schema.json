@@ -51,7 +51,7 @@
 			"delegatedUser": {
 				"title": "String that appears on Customer Portal log",
 				"type": "string",
-				"default": "homebridge"
+				"default": "Homebridge"
 			}
 		}
 	}

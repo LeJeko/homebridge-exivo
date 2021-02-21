@@ -30,17 +30,37 @@ You must get your site ID and generate API keys from [Customer portal](https://a
     }
 ]
 ```
-
 ## Optional values
 
-> **apiDelay** // 0 - 10, default: 3
-Delay between the Homekit action and the lock response time to execute the command.
-
-> **autoLock** // Default: true
-Simulate autolock behavior
-
-> **autoLockDelay** // 0 - 30, default: 6
-Time in seconds after the lock is self-locked
-
-> **delagatedUser** // Default: Homebridge
-String that appears on Customer Portal log.
+<table>
+<thead>
+<th>Entry</th>
+<th>Type</th>
+<th>Default</th>
+<th>Explanation</th>
+</thead>
+<tr>
+<td><code>apiDelay</code></td>
+<td align="center"><code>integer</code></td>
+<td align="center"><code>3</code></td>
+<td>Delay between the Homekit action and the lock response time to execute the command.</td>
+</tr>
+<tr>
+<td><code>autoLock</code></td>
+<td align="center"><code>bool</code></td>
+<td align="center"><code>true</code></td>
+<td>Simulate autolock behavior</td>
+</tr>
+<tr>
+<td><code>autoLockDelay</code></td>
+<td align="center"><code>integer</code></td>
+<td align="center"><code>6</code></td>
+<td>Time in seconds after the lock is self-locked</td>
+</tr>
+<tr>
+<td><code>delagatedUser</code></td>
+<td align="center"><code>bool</code></td>
+<td align="center"><code>false</code></td>
+<td>String that appears on Customer Portal log.</td>
+</tr>
+</table>
