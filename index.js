@@ -29,11 +29,11 @@ function Exivo(log, config, api) {
 
   this.log = log
   if (!config || (!config['site_id'] && (!config['api_key'] && !config['api_secret']))) {
-    log("Initialization skipped. Missing configuration data.")
+    this.log("Initialization skipped. Missing configuration data.")
     return
   }
 
-  log("Initialising Exivo")
+  this.log("Initialising Exivo")
 
   let platform = this
   this.accessories = new Map()
@@ -47,6 +47,28 @@ function Exivo(log, config, api) {
   this.autoLockDelay = config.autoLockDelay || 6
   this.manufacturer = "Dormakaba"
   this.delegatedUser = config.delegatedUser || "Homebridge"
+
+  const regex = /^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$/
+  let site = this.site_id.match(regex)
+  let key = this.api_key.match(regex)
+  let secret = this.api_secret.match(regex)
+  
+  this.log.debug("%s - %s - %s", site, key, secret)
+  
+  if ( !site || !key || !secret ) {
+    this.log("Initialization canceled:")
+    if ( !site ) {
+      this.log("site_id doesn't match UUID format")
+    }
+    if ( !key ) {
+      this.log("api_key doesn't match UUID format")
+    }
+    if ( !secret ) {
+      this.log("api_secret doesn't match UUID format")
+    }
+    return
+  }
+
 
   this.url = "https://api.exivo.io/v1/" + this.site_id + "/component"
   this.hostname = "api.exivo.io"
@@ -76,12 +98,7 @@ function Exivo(log, config, api) {
 
       var req = https.request(options, (resp) => {
 
-        platform.log.debug("GET response received (%s)", resp.statusCode)
-
-        if (resp.statusCode === '401') {
-          platform.log("Verify that you have the correct authenticationToken specified in your configuration.")
-          return
-        }
+        platform.log("HTTP response (%s) : %s", resp.statusCode, resp.statusMessage)
 
         let data = ''
         // A chunk of data has been received.

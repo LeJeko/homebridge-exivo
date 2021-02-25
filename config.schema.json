@@ -9,26 +9,20 @@
 			"site_id": {
 				"title": "Site ID",
 				"type": "string",
-				"required": true,
-				"placeholder": "UUID",
-				"default": ""
+				"required": true
 			},
 			"api_key": {
 				"title": "API Key",
 				"type": "string",
-				"required": true,
-				"placeholder": "UUID",
-				"default": ""
+				"required": true
 			},
 			"api_secret": {
 				"title": "API Secret",
 				"type": "string",
-				"required": true,
-				"placeholder": "UUID",
-				"default": ""
+				"required": true
 			},
 			"apiDelay": {
-				"title": "Delay between the Homekit action and the lock response time to execute the command",
+				"title": "Delay between the Homekit action and the lock response time to complete command",
 				"type": "integer",
 				"minimum": 0,
 				"maximum": 10,
