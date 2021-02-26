@@ -6,7 +6,7 @@
 
 # homebridge-exivo
 
-[![npm](https://img.shields.io/npm/v/homebridge-exivo.svg)](https://www.npmjs.com/package/homebridge-exivo) [![npm](https://img.shields.io/npm/dt/homebridge-exivo.svg)](https://www.npmjs.com/package/homebridge-exivo) [![verified-by-homebridge](https://badgen.net/badge/homebridge/verified/purple)](https://github.com/homebridge/homebridge/wiki/Verified-Plugins)
+[![npm](https://img.shields.io/npm/v/homebridge-exivo.svg)](https://www.npmjs.com/package/homebridge-exivo) [![npm](https://img.shields.io/npm/dt/homebridge-exivo.svg)](https://www.npmjs.com/package/homebridge-exivo) [![verified-by-homebridge](https://badgen.net/badge/homebridge/verified/purple)](https://github.com/homebridge/homebridge/wiki/Verified-Plugins) [![Donate](https://img.shields.io/badge/donate-PayPal-blue.svg)](https://www.paypal.com/donate?hosted_button_id=LU7BSTQF3DEZQ)
 
 </span>
 
