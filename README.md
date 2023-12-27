@@ -13,6 +13,7 @@
 ## Description
 This homebridge plug-in exposes Lock accessories from Dormakaba Exivo API to Homekit.
 You must get your site ID and generate API keys from [Customer portal](https://auth.exivo.io/login).
+Restart homebridge to reflect any additions, deletions or modifications made to your installation.
 
 ## config.json
 
@@ -59,8 +60,8 @@ You must get your site ID and generate API keys from [Customer portal](https://a
 </tr>
 <tr>
 <td><code>delagatedUser</code></td>
-<td align="center"><code>bool</code></td>
-<td align="center"><code>false</code></td>
+<td align="center"><code>string</code></td>
+<td align="center"><code>Homebridge</code></td>
 <td>String that appears on Customer Portal log.</td>
 </tr>
 </table>
