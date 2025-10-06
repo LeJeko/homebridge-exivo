@@ -1,22 +1,21 @@
-let Accessory, Service, Characteristic, UUIDGen
+let PlatformAccessory, Service, Characteristic, UUIDGen
 
 const https = require('https')
 
-module.exports = function(homebridge) {
-    console.log("homebridge API version: " + homebridge.version)
+module.exports = function(api) {
+  console.log("homebridge API version: " + api.version)
 
   // Accessory must be created from PlatformAccessory Constructor
-  Accessory = homebridge.platformAccessory
+  PlatformAccessory = api.platformAccessory
 
   // Service and Characteristic are from hap-nodejs
-  Service = homebridge.hap.Service
-  Characteristic = homebridge.hap.Characteristic
-  UUIDGen = homebridge.hap.uuid
+  Service = api.hap.Service
+  Characteristic = api.hap.Characteristic
+  UUIDGen = api.hap.uuid
 
   // For platform plugin to be considered as dynamic platform plugin,
   // registerPlatform(pluginName, platformName, constructor, dynamic), dynamic must be true
-  homebridge.registerPlatform("homebridge-exivo", "Exivo", Exivo, true)
-
+  api.registerPlatform("homebridge-exivo", "Exivo", Exivo, true)
 }
 
 // Platform constructor
@@ -43,7 +42,7 @@ function Exivo(log, config, api) {
   this.api_key = config.api_key || null
   this.api_secret = config.api_secret || null
   this.apiDelay = config.apiDelay || 3
-  this.autoLock = config.autoLock || true
+  this.autoLock = config.autoLock !== undefined ? config.autoLock : true
   this.autoLockDelay = config.autoLockDelay || 6
   this.manufacturer = "Dormakaba"
   this.delegatedUser = config.delegatedUser || "Homebridge"
@@ -74,7 +73,7 @@ function Exivo(log, config, api) {
   this.hostname = "api.exivo.io"
   this.path = "/v1/" + this.site_id + "/component"
 
-  this.auth = "Basic " + new Buffer(this.api_key + ":" + this.api_secret).toString("base64")
+  this.auth = "Basic " + Buffer.from(this.api_key + ":" + this.api_secret).toString("base64")
 
   // Get a list of all devices from the API
   if (api) {
@@ -117,8 +116,11 @@ function Exivo(log, config, api) {
 
             if (size === 0) {
               platform.log("As there were no devices were found, all devices have been removed from the platorm's cache. Please register your devices and restart HomeBridge")
-              platform.accessories.clear()
-              platform.api.unregisterPlatformAccessories("homebridge-exivo", "Exivo", platform.accessories)
+              const cachedAccessories = Array.from(platform.accessories.values())
+              if (cachedAccessories.length > 0) {
+                platform.api.unregisterPlatformAccessories("homebridge-exivo", "Exivo", cachedAccessories)
+                platform.accessories.clear()
+              }
               return
             }
 
@@ -185,7 +187,7 @@ function Exivo(log, config, api) {
       })
 
       req.on("error", (err) => {
-        platform.log("An error was encountered while requesting a list of devices. Satus: %s - Error was [%s]", resp.statusCode, err.message)
+        platform.log("An error was encountered while requesting a list of devices: %s", err.message)
       })
 
       req.on('timeout', function () {
@@ -230,27 +232,33 @@ Exivo.prototype.configureAccessory = function (accessory) {
 }
 
 Exivo.prototype.updateName = function (device) {
-  let accessory = this.accessories.get(device.id)
-  let name = device.identifier + " " + device.labelling
-  let serial = device.id.split("-").pop()
+  const accessory = this.accessories.get(device.id)
+  if (!accessory) {
+    this.log("Device [%s] not cached; skipping name update", device.id)
+    return
+  }
 
-  platform.log("Device with ID [%s] has been set: %s", deviceId, name)
+  const name = device.identifier + " " + device.labelling
+  const serial = device.id.split("-").pop()
+
+  this.log("Device with ID [%s] has been set: %s", device.id, name)
 
   accessory.getService(Service.AccessoryInformation).setCharacteristic(Characteristic.Name, name)
   accessory.getService(Service.AccessoryInformation).setCharacteristic(Characteristic.SerialNumber, serial)
   accessory.getService(Service.AccessoryInformation).setCharacteristic(Characteristic.Manufacturer, this.manufacturer)
-  accessory.getService(Service.AccessoryInformation).setCharacteristic(Characteristic.Model, this.templateIdentifier)
+  accessory.getService(Service.AccessoryInformation).setCharacteristic(Characteristic.Model, device.templateIdentifier)
   accessory.getService(Service.AccessoryInformation).setCharacteristic(Characteristic.Identify, false)
 }
 
 Exivo.prototype.addAccessory = function (device, deviceId = null) {
 
-  let uuid = UUIDGen.generate((deviceId ? deviceId : device.id).toString())
+  const contextDeviceId = (deviceId ? deviceId : device.id).toString()
+  const uuid = UUIDGen.generate(contextDeviceId)
 
   // Here we need to check if it is currently there
 
-  if (this.accessories.get(deviceId ? deviceId : device.id)) {
-    this.log("Not adding [%s] as it already exists in the cache", deviceId ? deviceId : device.id)
+  if (this.accessories.get(contextDeviceId)) {
+    this.log("Not adding [%s] as it already exists in the cache", contextDeviceId)
     this.updateName(device)
     return
   }
@@ -258,10 +266,9 @@ Exivo.prototype.addAccessory = function (device, deviceId = null) {
   let platform = this
 
   var name = device.identifier + " " + device.labelling
-  const accessory = new Accessory(name, uuid)
+  const accessory = new PlatformAccessory(name, uuid)
 
-  accessory.context.deviceId = deviceId ? deviceId : device.id
-  accessory.reachable = device.ready === 'true'
+  accessory.context.deviceId = contextDeviceId
 
   // Register service
   var service = accessory.addService(Service.LockMechanism, name)
@@ -289,7 +296,7 @@ Exivo.prototype.addAccessory = function (device, deviceId = null) {
   accessory.getService(Service.AccessoryInformation).setCharacteristic(Characteristic.Model, device.templateIdentifier)
   accessory.getService(Service.AccessoryInformation).setCharacteristic(Characteristic.Identify, false)
 
-  this.accessories.set(device.id, accessory)
+  this.accessories.set(contextDeviceId, accessory)
   this.api.registerPlatformAccessories("homebridge-exivo", "Exivo", [accessory])
 
   // Set initial state
@@ -363,7 +370,7 @@ Exivo.prototype.setLockTargetState = function (accessory, value, callback) {
     })
 
     req.on("error", (err) => {
-      platform.log("[%s] Error '%s' setting lock state. Error: %s", accessory.displayName, resp.statusCode, err.message)
+      platform.log("[%s] Error setting lock state: %s", accessory.displayName, err.message)
     })
 
     req.on('timeout', function () {
@@ -392,8 +399,7 @@ Exivo.prototype.autoLockFunction = function (accessory) {
 Exivo.prototype.removeAccessory = function (accessory) {
   let platform = this
   platform.log('Removing accessory [%s]', accessory.displayName)
-    accessories.delete(accessory.context.deviceId)
+  this.accessories.delete(accessory.context.deviceId)
 
-  this.api.unregisterPlatformAccessories('homebridge-exivo',
-    'Exivo', [accessory])
+  this.api.unregisterPlatformAccessories('homebridge-exivo', 'Exivo', [accessory])
 }
