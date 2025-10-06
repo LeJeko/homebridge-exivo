@@ -4,7 +4,7 @@ This homebridge plug-in exposes Lock accessories from Dormakaba Exivo API to Hom
 You must get your site ID and generate API keys from [Customer portal](https://auth.exivo.io/login).
 Restart homebridge to reflect any additions, deletions or modifications made to your installation.
 
-***Changes in v2.0.2***
+***Changes in v2.0.3***
 - Add explicit compatibility with Homebridge v2 while retaining support for v1.
 - Adopt the modern Homebridge API registration pattern and updated HAP references.
 - Replace deprecated Node.js buffer usage and clean up accessory bookkeeping for dynamic platform events.

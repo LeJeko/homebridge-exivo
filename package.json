@@ -1,7 +1,8 @@
 {
     "name": "homebridge-exivo",
-    "version": "2.0.2",
+    "version": "2.0.3",
     "description": "Homebridge plugin to expose Lock accessories from Dormakaba Exivo API to Homekit",
+    "homepage": "https://github.com/LeJeko/homebridge-exivo",
     "author": {
         "name": "LeJeko"
     },

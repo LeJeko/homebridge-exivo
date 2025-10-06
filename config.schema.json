@@ -1,52 +1,58 @@
 {
-	"pluginAlias": "Exivo",
-	"pluginType": "platform",
-	"singular": true,
-	"headerDisplay": "This homebridge plug-in exposes Lock accessories from Dormakaba Exivo API to Homekit. You must get your site ID and generate API keys from [Customer portal](https://auth.exivo.io/login).",
-	"schema": {
-		"type": "object",
-		"properties": {
-			"site_id": {
-				"title": "Site ID",
-				"type": "string",
-				"required": true
-			},
-			"api_key": {
-				"title": "API Key",
-				"type": "string",
-				"required": true
-			},
-			"api_secret": {
-				"title": "API Secret",
-				"type": "string",
-				"required": true
-			},
-			"apiDelay": {
-				"title": "Delay between the Homekit action and the lock response time to complete command",
-				"type": "integer",
-				"minimum": 0,
-				"maximum": 10,
-				"default": 3,
-				"description": "0 to 10 sec"
-			},
-			"autoLock": {
-				"title": "Simulate autolock behavior",
-				"type": "boolean",
-				"default": true
-			},
-			"autoLockDelay": {
-				"title": "Time in seconds after the lock is self-locked",
-				"type": "integer",
-				"minimum": 0,
-				"maximum": 30,
-				"default": 6,
-				"description": "0 to 30 sec"
-			},
-			"delegatedUser": {
-				"title": "String that appears on Customer Portal log",
-				"type": "string",
-				"default": "Homebridge"
-			}
-		}
-	}
+  "pluginAlias": "Exivo",
+  "pluginType": "platform",
+  "singular": true,
+  "name": "Dormakaba Exivo",
+  "headerDisplay": "This homebridge plug-in exposes Lock accessories from Dormakaba Exivo API to Homekit. You must get your site ID and generate API keys from [Customer portal](https://auth.exivo.io/login).",
+  "schema": {
+    "type": "object",
+    "properties": {
+      "site_id": {
+        "title": "Site ID",
+        "type": "string",
+        "format": "uuid"
+      },
+      "api_key": {
+        "title": "API Key",
+        "type": "string",
+        "format": "uuid"
+      },
+      "api_secret": {
+        "title": "API Secret",
+        "type": "string",
+        "format": "uuid"
+      },
+      "apiDelay": {
+        "title": "Delay between the Homekit action and the lock response time to complete command",
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 10,
+        "default": 3,
+        "description": "0 to 10 sec"
+      },
+      "autoLock": {
+        "title": "Simulate autolock behavior",
+        "type": "boolean",
+        "default": true
+      },
+      "autoLockDelay": {
+        "title": "Time in seconds after the lock is self-locked",
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 30,
+        "default": 6,
+        "description": "0 to 30 sec"
+      },
+      "delegatedUser": {
+        "title": "String that appears on Customer Portal log",
+        "type": "string",
+        "default": "Homebridge"
+      }
+    },
+    "required": [
+      "site_id",
+      "api_key",
+      "api_secret"
+    ]
+  }
 }
