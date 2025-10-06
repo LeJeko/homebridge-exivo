@@ -7,6 +7,11 @@
   "schema": {
     "type": "object",
     "properties": {
+      "name": {
+        "title": "Name",
+        "type": "string",
+        "default": "Exivo"
+      },
       "site_id": {
         "title": "Site ID",
         "type": "string",
@@ -50,6 +55,7 @@
       }
     },
     "required": [
+      "name",
       "site_id",
       "api_key",
       "api_secret"
